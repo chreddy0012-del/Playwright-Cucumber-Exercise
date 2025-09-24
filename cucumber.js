@@ -1,3 +1,12 @@
 module.exports = {
-    default: `--require-module ts-node/register --require './steps/**/*.ts' --require './hooks/**/*.ts --format @cucumber/pretty-formatter`
-};
+    default: {
+      requireModule: ['ts-node/register'],
+      require: [
+        'hooks/**/*.ts',
+        'steps/**/*.ts'
+      ],
+      paths: ['features/**/*.feature'],
+      publishQuiet: true
+    }
+  }
+  

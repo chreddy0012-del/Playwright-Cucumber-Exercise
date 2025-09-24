@@ -1,33 +1,34 @@
-import { Browser, chromium, Page } from 'playwright';
+import { Browser, Page, chromium } from "@playwright/test";
 
 let browser: Browser | null = null;
 let page: Page | null = null;
-const DEFAULT_TIMEOUT = 30000;
 
-export const initializeBrowser = async () => {
+export async function initializeBrowser() {
+  browser = await chromium.launch({ headless: true });
+}
+
+export function getBrowser(): Browser {
   if (!browser) {
-    browser = await chromium.launch({ headless: false });
+    throw new Error("Browser has not been initialized");
   }
-};
+  return browser;
+}
 
-export const initializePage = async () => {
-  if (browser && !page) {
-    page = await browser.newPage();
-    page.setDefaultTimeout(DEFAULT_TIMEOUT);
-  }
-};
+export function initializePage(newPage: Page) {
+  page = newPage;
+}
 
-export const getPage = (): Page => {
+export function getPage(): Page {
   if (!page) {
-    throw new Error('Page has not been initialized. Please call initializePage first.');
+    throw new Error("Page has not been initialized. Please call initializePage first.");
   }
   return page;
-};
+}
 
-export const closeBrowser = async () => {
+export async function closeBrowser() {
   if (browser) {
     await browser.close();
     browser = null;
     page = null;
   }
-};
+}
